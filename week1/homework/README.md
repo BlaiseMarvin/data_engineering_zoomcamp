@@ -13,3 +13,45 @@ Code used to get to answer:
 - **this was really obvious by looking at the compose file really, can verify it without needing to run the services**
 
 ## Question 3
+Code used to get answer:
+- ingestion.ipynb notebook
+
+code:
+Query1
+```
+SELECT
+	COUNT(*)
+FROM green_taxi_data
+WHERE lpep_dropoff_datetime >= '2019-10-01' AND lpep_dropoff_datetime < '2019-11-01' AND trip_distance <= 1
+```
+
+Query2:
+```
+SELECT
+	COUNT(*)
+FROM green_taxi_data
+WHERE (lpep_dropoff_datetime >= '2019-10-01' AND lpep_dropoff_datetime < '2019-11-01') AND trip_distance > 1 AND trip_distance <= 3
+```
+
+Query3
+```
+SELECT
+	COUNT(*)
+FROM green_taxi_data
+WHERE (lpep_dropoff_datetime >= '2019-10-01' AND lpep_dropoff_datetime < '2019-11-01') AND trip_distance > 3 AND trip_distance <= 7
+```
+Query4
+```
+SELECT
+	COUNT(*)
+FROM green_taxi_data
+WHERE (lpep_dropoff_datetime >= '2019-10-01' AND lpep_dropoff_datetime < '2019-11-01') AND trip_distance > 7 AND trip_distance <= 10
+```
+
+Query 5
+```
+SELECT
+	COUNT(*)
+FROM green_taxi_data
+WHERE (lpep_dropoff_datetime >= '2019-10-01' AND lpep_dropoff_datetime < '2019-11-01') AND trip_distance > 10
+```
