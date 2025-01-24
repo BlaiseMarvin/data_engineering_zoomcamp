@@ -1,0 +1,29 @@
+volumes:
+ qn_3:
+
+networks:
+  qn_3_net:
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=ny_taxi 
+    volumes:
+      - qn_3:/var/lib/postgresql/data:rw
+    networks:
+      - qn_3_net
+    ports:
+      - "5002:5432"
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    networks:
+      - qn_3_net
+    ports:
+      - "8002:80"
