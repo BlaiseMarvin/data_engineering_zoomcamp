@@ -1,0 +1,126 @@
+# spin up postgres docker container
+
+docker run -it \
+    -e POSTGRES_USER="root" \
+    -e POSTGRES_PASSWORD="root" \
+    -e POSTGRES_DB="ny_taxi" \
+    -v ny_taxi_postgres_data:/var/lib/postgresql/data \
+    -p 5002: 5432 \
+postgres:13
+
+# need to install pgcli to access the database:
+-> pip install pgcli
+connect pgcli 
+pgcli -h localhost -u root -p 5002 -d ny_taxi
+
+list of tables:
+\dt  
+
+downloading taxi trips file
+wget <path of file>
+
+visualize only a few rows of the downloaded data in cmd 
+head -n <num> <filename>
+
+we can now port this to a smaller file 
+
+head -n <num> <filename> > file2.csv
+
+# linux wc => word count command - we can count the number of lines existing in a particular csv file 
+
+wc -l <filename>
+millions of rows in the original dataset - which justifies our cutting off of the head and using that
+
+# run pgadmin - command to execute
+docker run -it \
+ -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
+ -e PGADMIN_DEFAULT_PASSWORD="root" \
+ -p 8088:80 \
+dpage/pgadmin4
+
+
+
+
+
+
+
+# convert jupyter notebook to python script:
+jupyter nbconvert --to=script <notebook name>
+
+
+# ingest the data:
+
+python ingest_data.py \
+ --user=root \
+ --password=root \
+ --host=localhost \
+ --port=5432 \
+ --db=ny_taxi \
+ --table_name=yellow_taxi_trips \
+ --url="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz"
+
+
+VM Instances
+create vm Instance
+add ssh key to your vm instance - public key
+on your local machine create key with ssh-keygen - copy public key to your vm b4 creating it
+
+start vm and connect to it using 
+ssh -i <path to your private key> username@externalIP
+
+download and install anaconda on your VM
+
+Instead of having to always call the path to your private key and IP address each time you ssh
+as in ssh -i <path to your .pub public key> username@IP 
+you can define a config file in your .ssh directory - with the following structure
+Host <hostname of your VM Instance>
+    HostName <External IP Address of your VM instance>
+    User <username of the vm - i.e. that you used to create the ssh key>
+    IdentityFile <path to your private ssh key>
+
+then in terminal - preferably in the location where you have your config file (created with touch config)
+run ssh <hostname> to seamlessly connect to your vm
+
+INSTALL docker on vm
+sudo apt-get install docker.io
+
+docker will probably require sudo after its installed this way.
+
+follow instructions on https://github.com/sindresorhus/guides/blob/main/docker-without-sudo.md
+
+# Add the docker group if it doesn't exist 
+$ sudo groupadd docker
+
+Add the connected user $USER to the docker group
+$ sudo gpasswd -a $USER docker
+
+IMPORTANT: Log out and log back in so that your group membership is re-evaluated.
+Restart the docker daemon
+$ sudo service docker restart
+
+If you are on Ubuntu 14.04-15.10, use docker.io instead:
+$ sudo service docker.io restart
+
+Change the context from Docker Desktop to Engine
+If you installed Docker Desktop first, then removed it and installed the Docker Engine, you may need to switch the Docker context with this command:
+$ docker context use default
+
+
+The above instructions will ensure docker can be run and started (the docker engine), without sudo permissions
+
+next thing we need is to install docker-compose
+go to the online docker-compose github repositories and wget the linux x86_64 docker-compose link
+with -O docker-compose 
+give docker-compose executable permissions with chmod +x docker-compose 
+
+then add this docker-compose to path by editing the .bashrc file
+
+we have downloaded and modified docker cm
+
+export PATH="${HOME}/bin:${PATH}"
+inside the bashrc file - this ensures that we have docker-compose added to file 
+remember we downloaded and made it an executable in the HOME/bin location
+
+
+install pgcli on the VM using:
+conda install -c conda-forge pgcli 

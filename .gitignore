@@ -1,0 +1,12 @@
+venv/
+keys.json
+**/.terraform/
+**/**.tfstate.**
+**/**.tfstate
+**/.terraform.lock.hcl
+# Ignore all .csv files
+*.csv
+
+# Ignore all directories with "csv" in their names
+*/csv/*
+*csv*/
