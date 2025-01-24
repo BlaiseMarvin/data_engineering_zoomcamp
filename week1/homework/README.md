@@ -55,3 +55,12 @@ SELECT
 FROM green_taxi_data
 WHERE (lpep_dropoff_datetime >= '2019-10-01' AND lpep_dropoff_datetime < '2019-11-01') AND trip_distance > 10
 ```
+
+## Question 4:
+Pick up day with the longest trip distance: SQL code:
+```
+SELECT
+	lpep_pickup_datetime
+FROM green_taxi_data
+WHERE trip_distance = (SELECT MAX(trip_distance) FROM green_taxi_data)
+```
