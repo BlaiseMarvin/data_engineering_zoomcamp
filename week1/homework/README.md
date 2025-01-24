@@ -64,3 +64,35 @@ SELECT
 FROM green_taxi_data
 WHERE trip_distance = (SELECT MAX(trip_distance) FROM green_taxi_data)
 ```
+
+## Question 5:
+Here is the code:
+Disclaimer - my top 3 are East Harlem North, East Harlem South and Central Harlem. Just gonna pick the closest answer for this one
+```
+SELECT
+	"Zone",
+	SUM(gt.total_amount) AS "total"
+FROM green_taxi_data gt
+JOIN zones z
+ON ("PULocationID" = "LocationID")
+GROUP BY "PULocationID","Zone"
+ORDER BY SUM(gt.total_amount) DESC
+```
+
+## Question 6:
+Here is the code that gives JFK Airport as the answer:
+```
+SELECT "Zone"
+FROM zones
+WHERE "LocationID" = (
+                        SELECT
+                            "DOLocationID"
+                        FROM green_taxi_data
+                        JOIN zones
+                        ON ("PULocationID"="LocationID")
+                        WHERE "Zone"='East Harlem North' AND lpep_pickup_datetime BETWEEN '2019-10-01' AND '2019-10-31'
+                        ORDER BY tip_amount DESC
+                        LIMIT 1
+                        )
+```
+
