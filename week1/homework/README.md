@@ -96,3 +96,9 @@ WHERE "LocationID" = (
                         )
 ```
 
+
+## Question 7:
+Straightforward question
+init downloads the plugins
+apply executes the plan 
+destroy removes resources
