@@ -1,0 +1,42 @@
+ELT vs ETL
+Export Load and Transform vs Export Transform and Load
+Export transform and load - small amounts of data => this is a schema on write solution - well defined schema then write the data
+ELT => Large amounts of data - where we write the data first and then determine the schema on read 
+ELT provides data lake support - schema on read
+
+Gotcha of Data Lake
+Converting into Data Swamp
+No versioning
+Incompatible schemas for same data without versioning
+No metadata associated
+Joins not possible
+
+Cloud provider for data lake
+GCP -cloud storage
+AWS - S3
+Azure - Azure Blob
+
+
+Workflow Orchestration
+DAGS are the workflows
+
+Data Pipeline => 
+DAG - Directed Acyclic Graph
+Directed
+Acyclic - no cycles
+
+DAGS have some parameters 
+How do we run the graph => Need to have an easy way of running things
+Data Workflow Orchestration 
+- LUIGI
+- Apache Airflow
+- Prefect
+- Kestra
+
+
+Apache Airflow
+Airflow consists of a web server
+Scheduler - component responsible for scheduling jobs
+Worker - component that executes a task given to it by the scheduler
+Metadata Database - stores the state of the environment - used by the scheduler and worker
+Error service - 

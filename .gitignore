@@ -10,3 +10,4 @@ keys.json
 # Ignore all directories with "csv" in their names
 */csv/*
 *csv*/
+.env
