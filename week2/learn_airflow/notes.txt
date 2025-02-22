@@ -1,0 +1,143 @@
+Installing Airflow
+- running it through docker-compose
+- airflow running through docker image: puckel/docker-airflow:1.10.9 => need a dockerfile for this with just
+a from statement that builds this container each time its run 
+- Heavy lifting is in the docker-compose file
+- We essentially need to link airflow to a database
+- we choose postgres in this case - so we start our compose service with the airflow container and 
+the postgres container in the same network
+- we create the postgres container and specify the password, user, and database environment variables
+- passing airflow to all of them. 
+- recap on the meaning of these postgres container environment variables 
+=> POSTGRES_PASSWORD - only mandatory environment variable that must always be specified. It sets the 
+superuser password for PostgreSQL. The default superuser is defined by the POSTGRES_USER environment variable
+POSTGRES_USER=> Optional environment variable is used in conjunction with the POSTGRES_PASSWORD environment variable
+This variable creates the specified user with superuser power and a database with the same name. If not specified,
+the default user of postgres is used. 
+POSTGRES_DB => Optional env variable used to define a different name for the default database that is created when the image is first 
+started. If not specified, the value of postgres user is used instead. 
+
+The airflow container in the compose file 
+Here, we give the container service a name => webserver.
+specify or state restart to always - meaning whenever it is interrupted and stops - start it again
+depends_on => postgres - meaning it needs to let the database start first 
+environment variables - LOAD_EX=n, and EXECUTOR=Local 
+Volumes - This is how we pass dags written in python on our system to the airflow container 
+Point to map in the container is: /usr/local/airflow/dags 
+We have a local directory inside our WORKDIR called dags - which we then map to this address in the container 
+ports - provide access to the webserver 
+we also set up a healthcheck to ensure our webserver is always healthy
+
+Thats it about installing airflow 
+
+
+Now about writing DAGS:
+
+
+
+Rememeber - we created our local directory called dags and then mapped that to airflow's /usr/local/airflow/dags
+
+- writing our first dag:
+
+- some important packages to install or have in our dag file
+A DAG - A DAG (Directed Acyclic Graph) - core concept of Airflow - collecting Tasks together, organnized with dependencies and relationships to say how they should run
+Ways to declare a DAG:
+Either use the with statement (context manager), or use a standard constructor - passing the DAG into any operators we use 
+
+from airflow import DAG 
+with DAG() - context manager route for defining a dag 
+then pass stuff into the DAG such as the dag_id, start_date, schedule
+
+DAGS in airflow are nothing without Tasks to run, and these will usually come in the form of wither Operators, Sensors or TaskFlow
+
+Operators - An operator is conceptually a template for a predefined Task, that youcan just define declaratively inside your DAG:
+with DAG("DAG PARAMETERS SPECIFIED") as dag:
+    ping = HttpOperator(endpoint="http://example.com/update/")
+    email = EmailOperator(to="admin@example.com",subject="Update Complete")
+    ping >> email
+
+Airflow has a very extensive set of operators available with some built-in to the core or preinstalled
+some popular operators from the core include:
+- BashOperator => executes a bash command 
+- PythonOperator => calls an arbitrary python function
+- EmailOperator => sends an email
+
+Tasks/Operators do not usually live alone - they have dependencies on other tasks.
+Declaring these dependencies between tasks is what makes up the DAG structure (the edges of the directed acyclic graph)
+There's 2 main ways to declare individual task dependencies
+The recommended one is to use the >> and << operators
+first_task >> [second_task,third_task]
+third_task << fourth_task 
+
+Or, you can use the more explicit set_upstream and set_downstream methods:
+first_task.set_downstream([second_task,third_task])
+third_task.set_upstream(fourth_task)
+
+There are also shortcuts to declaring more complex dependecies. If you want to make a list of
+tasks depend on another list of tasks, you can't use either of the approaches above, you need to use cross_downstream
+
+from airflow.models.baseoperator import cross_downstream 
+# replaces
+[op1, op2] >> op3
+[op1, op2] >> op4
+
+cross_downstream([op1, op2], [op3, op4])
+
+# to chain together dependencies, you can use the chain operator 
+
+in our code we import dependencies using a try, except block
+
+try:
+    from datetime import timedelta - cuz we wanna perform some time manipulation
+    from airflow import DAG - defining the structure of our DAG
+    from airflow.operators.python_operator import PythonOperator - operator to run our python tasks
+    from datetime import datetime 
+except Exception as e:
+    print("Error {}".format(e))
+
+
+# the above is code for our dependencies installation
+def first_function_execute():
+    print("Hello World")
+    return "Hello World"
+
+# now defining a DAG
+# we use a context manager here:
+# recommended syntax for this case is that your dag id should be equal to the python file in which your DAG is found
+# Here for the schedule interval - could use plain english text or you could use a crontab expression
+# default args provides the default configuration variables that will be applied to all tasks in the DAG
+# unless explicitly overriden
+e.g. 
+default_args = {
+    "owner": "airflow", # the person/team responsible for the DAG
+    "retries": 1, # the number of times to retry a failed task 
+    "retry_delay": timedelta(minutes=5), # wait time between retries 
+    "start_date": datetime(2020,11,1) # when the DAG should start running
+}
+
+# catchup ensures we don't catchup - we don't backfill
+# good rule of thumb is to call the task_id the actual function name
+
+# now we need to look at how to pass functions and arguments to our python tasks or in general to our tasks in airflow
+# how to pass data between them - how to exchange data between tasks
+
+# to give query parameters - 
+# the PythonOperator Operator takes an argument called op_kwargs that can be used to pass kwargs to the 
+# root function of the task
+# op_kwargs = {"name"}
+# in your python function - just ensure to have **kwargs
+# remember python dictionaries have a get method for elegantly reading arguments, 
+
+with DAG(dag_id="first_dag", schedule_interval = "@daily", default_args={}, catchup=False) as f:
+    first_function_execute = PythonOperator(
+        task_id="first_function_execute",
+        python_callable=first_function_execute
+    )
+
+
+to install packages 
+just add installation code to your Dockerfile 
+RUN pip install pandas 
+RUN pip install tensorflow
+
+stuff like that

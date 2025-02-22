@@ -2,19 +2,22 @@ try:
     from datetime import timedelta
     from airflow import DAG
     from airflow.operators.python_operator import PythonOperator
+    from airflow.operators.email_operator import EmailOperator
     from datetime import datetime
     print("All Dag Modules are ok........")
 except Exception as e:
     print("Error {} ".format(e))
 
 
-def first_function_execute(**kwargs):
+def first_function_execute(**context):
     print("First function Execute ")
-    variable = kwargs.get("name","Didn't get the name")
-    print("Hello World: Mr. {}".format(variable))
-    return "Hello World " + variable
+    context['ti'].xcom_push(key='mykey',value="first_function_execute says Hello ")
 
 # 
+def second_function_execute(**context):
+    instance = context.get("ti").xcom_pull(key="mykey")
+    print("I am in second_function_execute got value: {} from Function 1 ".format(instance))
+
 # def second_function_execute(*args,**kwargs):
 
 # for the schedule interval -> it is also possible to provide your crontab expression such as
@@ -34,5 +37,15 @@ with DAG(
     first_function_execute = PythonOperator(
         task_id="first_function_execute",
         python_callable=first_function_execute,
-        op_kwargs={"name":"Blaise Rusoke"}
+        provide_context=True
     )
+
+    second_function_execute = PythonOperator(
+        task_id="second_function_execute",
+        python_callable=second_function_execute,
+        provide_context=True
+    )
+
+    first_function_execute >> second_function_execute
+
+
