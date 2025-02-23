@@ -40,3 +40,20 @@ Scheduler - component responsible for scheduling jobs
 Worker - component that executes a task given to it by the scheduler
 Metadata Database - stores the state of the environment - used by the scheduler and worker
 Error service - 
+
+Airflow concepts:
+ - after downloading the official docker-compose file in your directory need to follow these next steps: 
+ - create the dags, logs and plugins directories within the airflow project directory
+ - next need to define the host user id and set the group user id to zero
+ - This is how:
+ => echo -e "AIRFLOW_UID=$(id -u)\nAIRFLOW_GID=0" > .env 
+That above bash command is crucial for setting up proper file permissions in airflow when running docker containers
+The command creates a .env file with 2 environment variables 
+AIRFLOW_UID=$(id -u)
+AIRFLOW_GID=0
+$(id -u) => gets your current Linux user ID 
+setting this ensures that files created by airflow containers are owned by your user 
+without this, files may be owned by root (UID 0) and cause permission issues 
+
+Next thing is:
+ - 

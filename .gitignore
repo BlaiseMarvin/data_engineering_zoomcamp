@@ -1,5 +1,6 @@
 venv/
 keys.json
+google_credentials.json
 **/.terraform/
 **/**.tfstate.**
 **/**.tfstate
@@ -12,3 +13,7 @@ keys.json
 *csv*/
 .env
 **/__pycache__/**
+**/google_credentials/
+**/logs/
+**/plugins/
+**/.env
