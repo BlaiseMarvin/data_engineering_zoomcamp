@@ -55,5 +55,8 @@ $(id -u) => gets your current Linux user ID
 setting this ensures that files created by airflow containers are owned by your user 
 without this, files may be owned by root (UID 0) and cause permission issues 
 
+
 Next thing is:
  - 
+
+
