@@ -17,3 +17,4 @@ google_credentials.json
 **/logs/
 **/plugins/
 **/.env
+**/config/
