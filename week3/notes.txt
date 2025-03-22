@@ -1,0 +1,58 @@
+Data Warehouses
+
+OLAP v. OLTP
+
+OLTP - Online Transaction Processing
+OLAP - Online Analytical Processing
+
+What is a data warehouse?
+ - OLAP solution
+ - Used for reporting and data analysis
+
+Data Warehouse:
+ - Raw data
+ - Summary data
+ - Data Marts
+
+Big Query:
+ - Serveless Data Warehouse
+   - No servers to manage or database software to install
+- Software as well as infrastructure including:
+ - scalability and high availability
+- Built-in features like:
+  - machine learning
+  - geospatial analysis
+  - business intelligence
+- BigQuery maximizes flexibility by separating the compute engine that analyses your data from your storage
+
+
+
+BigQuery Partition:
+When you create a partition column in big query, you can choose between:
+ - Time-unit column
+ - Ingestion time (_PARTITIONTIME)
+ - Integer range partitioning
+When using Time unit or ingestion time
+ - daily, hourly, monthly or yearly
+number of partitions limit is 4000
+
+BigQuery Clustering:
+  - Columns you specify are used to colocate related data 
+  - Order of the column is important
+  - The order of the specified columns determines the sort order 
+  - clustering improves
+    - filter queries
+    - aggregate queries
+  - 
+
+
+Build ML model in your serveless BQ data warehouse
+Export model's resources to gcs bucket
+bq --project_id total-fiber-448420-g2 extract -m ny_taxi.tip_model gs://my_taxi_ml_model/tip_model
+
+then copy the model's files from gcs to your local directory:
+ - gsutil cp -r gs://my_taxi_ml_model/tip_model ./model/
+
+Create a serving directory 
+ - copy all our files to the serving directory 
+ 
