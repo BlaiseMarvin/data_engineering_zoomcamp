@@ -20,3 +20,9 @@ google_credentials.json
 **/config/
 *.db
 *.duckdb
+target/
+dbt_packages/
+logs/
+**target/
+**dbt_packages/
+**logs/

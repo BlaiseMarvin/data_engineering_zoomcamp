@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: staging
+    database: total-fiber-448420-g2
+    schema: analytics_engineering_project
+    tables:
+      - name: green_trips
+        identifier: green_trips_data
+
+      - name: yellow_trips
+        identifier: yellow_taxi_trips
