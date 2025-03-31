@@ -1,0 +1,11 @@
+DBT - Important to look up cross database macros and how they help different projects
+
+Out of the box, dbt comes with the following generic tests:
+ - unique
+ - not null
+ - relationships
+ - accepted values
+
+Lots of packages on hub.getdbt.com
+dbt utils - great helperfunctions
+dbt great expectations as well
