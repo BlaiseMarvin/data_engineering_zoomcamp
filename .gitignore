@@ -26,3 +26,14 @@ logs/
 **target/
 **dbt_packages/
 **logs/
+**venv**
+**metastore_db**
+**shit**
+**outputs**
+**log**
+**notebooks2**
+**/.parquet**
+*/parquet/*
+*parquet*/
+*/log/*
+*log*/

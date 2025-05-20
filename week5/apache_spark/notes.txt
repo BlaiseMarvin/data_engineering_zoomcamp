@@ -1,0 +1,56 @@
+Apache Spark:
+ - Installation
+=> Download JDK - Ver 8 and above
+oracle.com/in/java/technologies/downloads/#jdk19-windows
+
+Store your jdk in 
+c:/java/jdk
+
+ - Python: Have or install it 
+=> Ensure its added to path
+
+Install Spark
+-> spark.apache.org => Downloads 
+Spark on windows needs Hadoop - choose a spark version that corresponds to the hadoop version you'll install 
+Same thing with spark 
+- on your local system - and ensure you have c:/spark/bin -> all your files in the bin folder
+
+Get Hadoop from: github.com/steveloughran/winutils
+or from the one referenced in the fork on my repo 
+have it in  => c:/hadoop/bin/ -> files should be in the bin folder - main file is the winutils.exe 
+
+Ensure that Java, Python, Hadoop and Spark are added to path 
+
+Windows - Edit Environment Variables and add the following:
+ New user environment variables 
+
+Variable name: JAVA_HOME
+Variable value: Should be your C:/java/jdk
+
+Variable name: HADOOP_HOME
+Variable value: c:/hadoop
+
+Variable name: SPARK_HOME
+Variable value: c:/spark/spark-3.3.1-bin-hadoop2  => which essentially is your spark download with a bin folder in it 
+
+Variable_name: PYSPARK_HOME
+Variable value: c:/Users/<username>/Local/Programs/Python/PythonVER/python.exe
+(PYSPARK_HOME has got to point to your actual python exe)
+
+Then go to the variables in the path and ensure that your bin directories have been added 
+ - Especially => Java , i.e. c:/users/java/jdk/bin => added to the path variable 
+ - Add hadoop's bin to path => c:/users/hadoop/balablala/bin
+ - Add spark's bin to path => c:/users/spark-3.3.1-bin.hadoop2/bin 
+
+That should be it  - for windows 
+
+Verify installation:
+ - CMD => run spark-shell 
+ - Opens the spark scala shell 
+
+ - CMD => run pyspark
+Installation works - 
+
+
+Install pyspark in your virtual env 
+

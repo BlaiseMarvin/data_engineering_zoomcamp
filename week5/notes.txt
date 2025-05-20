@@ -1,0 +1,25 @@
+Batch Processing:
+ - Processing Data 
+    - Batch and Streaming
+      
+Apache Spark:
+    - Data Processing Engine
+        Its distributed - can have a cluster with a couple of nodes 
+
+        When to use spark:
+            - 
+            - DATA LAKE => (SPARK PROCESSING ENGINE) => DATA LAKE 
+              
+              SOMETIMES THOUGH, YOUR PROCESSING JOB CAN BE EXPRESSED IN NATIVE SQL AND 
+              YOU CAN JUST CONNECT AN EXTERNAL TABLE TO YOUR WAREHOUSE AND DO THE PROCESSING YOU NEED 
+
+              BUT, SOME JOBS CANNOT BE EXPRESSED IN NATIVE SQL, SO YOU'D NEED SPARK 
+              E.G. MACHINE LEARNING JOBS
+
+              ALTERNATIVES TO SPARK ARE APACHE HIVE, PRESTO/ATHENA
+
+            - TYPICAL WORKFLOW
+                - 
+                - RAW DATA => DATA LAKE => (TRANSFORMATIONS WITH SQL) => SPARK (PROCESSING) => PYTHON JOB FOR TRAINING A ML MODEL
+
+                  - CAN ALSO TAKE MODEL AND THEN USE SPARK TO APPLY THE MODEL ON DATA TO GENERATE MORE DATA
